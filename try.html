@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Before and After Example</title>
+    <style>
+        .example {
+            position: relative;
+            font-size: 20px;
+            color: blue;
+        }
+
+        .example::before {
+            content: "Before: ";
+            color: red;
+        }
+
+        .example::after {
+            content: " :After";
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="example">Main Content</div>
+    
+    <script>
+        const element = document.querySelector(".example");
+        const beforeStyle = window.getComputedStyle(element, '::before');
+        const afterStyle = window.getComputedStyle(element, '::after');
+
+        console.log("Before content: ", beforeStyle.content);
+        console.log("After content: ", afterStyle.content);
+
+        // Changing before and after pseudo-element styles dynamically
+        element.style.setProperty('--before-color', 'orange');
+        element.style.setProperty('--after-color', 'purple');
+    </script>
+</body>
+</html>

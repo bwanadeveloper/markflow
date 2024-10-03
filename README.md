@@ -10,5 +10,6 @@ Command to create a branch
 
     to view you branch
 
-All way remember to gitpull before commit and push
+Always remember to run gitpull before commiting  and pushing
 
+#HappyCoding

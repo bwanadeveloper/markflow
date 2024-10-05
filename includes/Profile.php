@@ -18,7 +18,7 @@ if (is_array($Result) && count($Result)>0) {
     $user_id = htmlspecialchars($Result[0]->user_id);
     $Username=htmlspecialchars($Result[0]->Username);
     $new_rec = '
-    <div>
+    <div id="profile">
         <h3>Profile</h3>
         <select id="School" name="School">
             <option value="School" ' . ($selectedSchool == "School" ? 'selected' : '') . '>School</option>

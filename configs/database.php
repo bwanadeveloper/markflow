@@ -51,10 +51,11 @@ public function write($query,$arr=[]){
 
 }
 
-function getRandomNumber( $max) {
-    for($i=1;$i<$max;$i++){
-    $rand=rand(4, $max);
-     $rand .=$rand;
+function getRandomNumber($max, $time) {
+    $randStr = '';
+    for($i = 0; $i < $time; $i++) {
+        $rand = rand(4, $max);
+        $randStr .= $rand; // Concatenate each random number to the string
     }
-    return $rand;
+    return $randStr;
 }

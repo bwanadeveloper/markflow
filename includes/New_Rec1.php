@@ -76,9 +76,14 @@ if (is_array($Result) && count($Result) > 0) {
         </div>
 
         <div style="margin-top:5px">
-            <textarea name="Info" id="info" rows="10" cols="40"></textarea>
+            <textarea name="Info" id="info" rows="5" cols="40"></textarea>
             <label for="info">Info:</label>
         </div>
+
+        <div style="margin-top:5px">
+            <textarea name="Info" id="Res_info" rows="5" cols="40" disabled></textarea>
+            <label for="info">Reconsiliation Info:</label>
+        </div> 
 
         <div style="margin-top:5px">
             <input id="send" type="button" value="send" onclick="send_data(event)">

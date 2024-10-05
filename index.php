@@ -1,3 +1,7 @@
+<?php
+include "configs/autoload.php"
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,17 +85,250 @@
         input[type="radio"]{
             display: none;
         }
+        input[type="button"]{
+            padding:10px;
+            border:thin black 1px;
+        }
         .Error{
             position: absolute;
             right: 30px;
             background-color: orangered;
         }
+        .Timeline{
+            width:100%;
+            height:25px; 
+            background-color:#5BCD85;
+            display:flex;
+            gap:20px;
+            overflow: hidden;
+            vertical-align: center;
+            font-size: 11px;
+            
+        }
+        .Timeline .view{
+            font-size: 11px;
+            padding: 3px;
+        }
+        .Timeline:nth-child(even) {
+            background-color: #5BCDB1;
+        }
+        #wrapper-view-missing{
+         
+            float: right;
+            width:60%;
+            margin: auto;
+        }
+        
 
+    
     </style>
 </head>
 <body>
-   
-    <div id="wrapper">
+<?php
+if (!empty($_GET["action"]) && $_GET["action"] === "view" && !empty($_GET["id"])):?>
+   <?php
+    $id = intval($_GET['id']); 
+    $arr=false;
+    $arr["Missing_id"]=$id;
+    $sql = "SELECT * FROM missing_marks WHERE Missing_id = :Missing_id";
+    $db = new database();
+    
+    $result=$db->read($sql,$arr);
+    // print_r($result);
+    $selectedSchool=$result[0]->School ;
+    $name=$result[0]->Name ;
+    $reg=$result[0]->Reg ;
+    $unit=$result[0]->Unit;
+    $lec=$result[0]->Lec ;
+    $info=$result[0]->Info;
+    $res_info=$result[0]->Res_info;
+    $exam=$result[0]->Exam;
+    $ass1=$result[0]->Ass1;
+    $ass2=$result[0]->Ass2;
+    $ass3=$result[0]->Ass3;
+    $cat1=$result[0]->Cat1;
+    $cat2=$result[0]->Cat2;
+    // print_r($result)
+  
+    ?>
+    <div id="wrapper-view-missing">
+    <div style="margin-top:5px">
+    <input type="text" name="Name" value="<?= $name ?>" id="Name">
+
+            <label for="Name">Name:</label>
+        </div>
+
+        <div style="margin-top:5px">
+            <input type="text" name="Reg.No" value=<?=$reg?> id="Reg.No">
+            <label for="Reg.No">Reg.No:</label>
+        </div>
+
+        <div style="margin-top:5px">
+            <select id="School" name="School">
+                <option value="School" <?=$selectedSchool == "School" ? 'selected' : ''?>>School</option>
+                <option value="Technology" <?= $selectedSchool == "Technology" ? 'selected' : ''?>>Technology</option>
+                <option value="Business" <?= $selectedSchool == "Business" ? 'selected' : ''?>>Business</option>
+                <option value="Education" <?= $selectedSchool == "Education" ? 'selected' : ''?>>Education</option>
+            </select>
+            <label for="School">School:</label>
+        </div>
+
+        <div style="margin-top:5px">
+            <input type="text" name="Unit" id="unit" value="<?=$unit?>">
+            <label for="unit">Unit:</label>
+        </div>
+
+        <div style="margin-top:5px">
+        <input type="checkbox" value="Exam" name="Exam" id="Exam" <?= $exam == 1 ? 'checked' : '' ?>>
+            <label for="Exam">Exam</label>
+        </div>
+
+        <div style="margin-top:5px">
+            <h5>Course Work</h5>
+            <input type="checkbox" value="Ass1" name="Ass1" id="Ass1"<?= $ass1 == 1 ? 'checked' : '' ?> >
+            <label for="Ass1">Ass1</label>
+            <input type="checkbox" value="Ass2" name="Ass2" id="Ass2" <?= $ass2 == 1 ? 'checked' : '' ?>>
+            <label for="Ass2">Ass2</label>
+            <input type="checkbox" value="Ass3" name="Ass3" id="Ass3" <?= $ass3 == 1 ? 'checked' : '' ?>>
+            <label for="Ass3">Ass3</label>
+            <input type="checkbox" value="Cat1" name="Cat1" id="Cat1" <?= $cat1 == 1 ? 'checked' : '' ?>>
+            <label for="Cat1">Cat1</label>
+            <input type="checkbox" value="Cat2" name="Cat2" id="Cat2" <?= $cat2 == 1 ? 'checked' : '' ?>>
+            <label for="Cat2">Cat2</label>
+        </div>
+
+        <div style="margin-top:5px">
+            <input type="text" name="Lec" id="Lec" value="<?=$lec?>">
+            <label for="Lec">Lec:</label>
+        </div>
+
+        <div style="margin-top:5px">
+            <textarea name="Info" id="info" rows="10" cols="40"><?=$info?></textarea>
+            <label for="info">Info:</label>
+        </div>
+        <div style="margin-top:5px">
+            <textarea name="Info" id="Res_info" rows="5" cols="40" disabled <?=$res_info?>></textarea>
+            <label for="info">Reconsiliation Info:</label>
+        </div>
+        <div style="margin-top:5px">
+            <input id="send" type="button" value="save" onclick="save_data(event)">
+        </div>
+
+        <div><a href="index.php"><input type="button" value="Go Back"></a></div>
+
+    </div>
+     <div id="nav">
+
+    <label id="lab" class="New" style="border-top-left-radius:10px;" for="New Reconsiliation">New Reconsiliation</label>
+    <label id="lab" style="border-left:10px solid pink;" class="Time" for="Reconsiliation Timeline">Reconsiliation Timeline</label>
+    <label id="lab" class="All" for="All Reconsiliation">All Reconsiliation</label>
+    <label id="lab" class="profile" for="Profile">Profile</label>
+    <label id="lab" class="mess"  for="mess" >Messages</label>
+    <label id="lab" class="Logout" style="border-bottom-left-radius:10px;" for="Logout" >Logout</label>
+   </div>
+   <?php elseif (!empty($_GET["action"]) && $_GET["action"] === "view_rec" && !empty($_GET["id"])): ?>
+    <?php
+    $id = intval($_GET['id']); 
+    $arr=false;
+    $arr["Missing_id"]=$id;
+    $sql = "SELECT * FROM missing_marks WHERE Missing_id = :Missing_id";
+    $db = new database();
+    
+    $result=$db->read($sql,$arr);
+
+    $selectedSchool=$result[0]->School ;
+    $name=$result[0]->Name ;
+    $reg=$result[0]->Reg ;
+    $unit=$result[0]->Unit;
+    $lec=$result[0]->Lec ;
+    $info=$result[0]->Info;
+    $res_info=$result[0]->Res_info;
+    $exam=$result[0]->Exam;
+    $ass1=$result[0]->Ass1;
+    $ass2=$result[0]->Ass2;
+    $ass3=$result[0]->Ass3;
+    $cat1=$result[0]->Cat1;
+    $cat2=$result[0]->Cat2;
+    // print_r($result)
+  
+    ?>
+    <div id="wrapper-view-missing">
+    <div style="margin-top:5px">
+    <input type="text" name="Name" value="<?= $name ?>" id="Name">
+
+            <label for="Name">Name:</label>
+        </div>
+
+        <div style="margin-top:5px">
+            <input type="text" name="Reg.No" value=<?=$reg?> id="Reg.No">
+            <label for="Reg.No">Reg.No:</label>
+        </div>
+
+        <div style="margin-top:5px">
+            <select id="School" name="School">
+                <option value="School" <?=$selectedSchool == "School" ? 'selected' : ''?>>School</option>
+                <option value="Technology" <?= $selectedSchool == "Technology" ? 'selected' : ''?>>Technology</option>
+                <option value="Business" <?= $selectedSchool == "Business" ? 'selected' : ''?>>Business</option>
+                <option value="Education" <?= $selectedSchool == "Education" ? 'selected' : ''?>>Education</option>
+            </select>
+            <label for="School">School:</label>
+        </div>
+
+        <div style="margin-top:5px">
+            <input type="text" name="Unit" id="unit" value="<?=$unit?>">
+            <label for="unit">Unit:</label>
+        </div>
+
+        <div style="margin-top:5px">
+        <input type="checkbox" value="Exam" name="Exam" id="Exam" <?= $exam == 1 ? 'checked' : '' ?>>
+            <label for="Exam">Exam</label>
+        </div>
+
+        <div style="margin-top:5px">
+            <h5>Course Work</h5>
+            <input type="checkbox" value="Ass1" name="Ass1" id="Ass1"<?= $ass1 == 1 ? 'checked' : '' ?> >
+            <label for="Ass1">Ass1</label>
+            <input type="checkbox" value="Ass2" name="Ass2" id="Ass2" <?= $ass2 == 1 ? 'checked' : '' ?>>
+            <label for="Ass2">Ass2</label>
+            <input type="checkbox" value="Ass3" name="Ass3" id="Ass3" <?= $ass3 == 1 ? 'checked' : '' ?>>
+            <label for="Ass3">Ass3</label>
+            <input type="checkbox" value="Cat1" name="Cat1" id="Cat1" <?= $cat1 == 1 ? 'checked' : '' ?>>
+            <label for="Cat1">Cat1</label>
+            <input type="checkbox" value="Cat2" name="Cat2" id="Cat2" <?= $cat2 == 1 ? 'checked' : '' ?>>
+            <label for="Cat2">Cat2</label>
+        </div>
+
+        <div style="margin-top:5px">
+            <input type="text" name="Lec" id="Lec" value="<?=$lec?>">
+            <label for="Lec">Lec:</label>
+        </div>
+
+        <div style="margin-top:5px">
+            <textarea name="Info" id="info" rows="10" cols="40"><?=$info?></textarea>
+            <label for="info">Info:</label>
+        </div>
+        <div style="margin-top:5px">
+            <textarea name="Info" id="Res_info" rows="5" cols="40" disabled ><?=$res_info?></textarea>
+            <label for="info">Reconsiliation Info:</label>
+        </div>
+        <div style="margin-top:5px">
+            <input id="send" type="button" value="save" onclick="save_data(event)">
+        </div>
+
+        <div><a href="index.php"><input type="button" value="Go Back"></a></div>
+
+    </div>
+     <div id="nav">
+
+    <label id="lab" class="New" style="border-top-left-radius:10px;" for="New Reconsiliation">New Reconsiliation</label>
+    <label id="lab"  class="Time" for="Reconsiliation Timeline">Reconsiliation Timeline</label>
+    <label id="lab" style="border-left:10px solid pink;" class="All" for="All Reconsiliation">All Reconsiliation</label>
+    <label id="lab" class="profile" for="Profile">Profile</label>
+    <label id="lab" class="mess"  for="mess" >Messages</label>
+    <label id="lab" class="Logout" style="border-bottom-left-radius:10px;" for="Logout" >Logout</label>
+   </div>
+<?php else:?>
+  <div id="wrapper">
 <input type="radio" id="New Reconsiliation" name="radio">
 <input type="radio" id="Reconsiliation Timeline" name="radio">
 <input type="radio" id="All Reconsiliation" name="radio">
@@ -110,19 +347,18 @@
    <div id="nav">
 
     <label id="lab" class="New" style="border-top-left-radius:10px;" for="New Reconsiliation">New Reconsiliation</label>
-    <label id="lab" class="Time" for="Reconsiliation Timeline">Reconsiliation Timeline</label>
+    <label id="lab" class="Time"  for="Reconsiliation Timeline">Reconsiliation Timeline</label>
     <label id="lab" class="All" for="All Reconsiliation">All Reconsiliation</label>
     <label id="lab" class="profile" for="Profile">Profile</label>
     <label id="lab" class="mess"  for="mess" >Messages</label>
     <label id="lab" class="Logout" style="border-bottom-left-radius:10px;" for="Logout" >Logout</label>
    </div>
-
    <script>
 function _(id){
 return document.querySelectorAll(id)
 }
 
-
+let view=_(".view")[0]
 let labels=_("#lab");
 labels.forEach(label => {
     label.addEventListener("click",function(){
@@ -131,10 +367,12 @@ labels.forEach(label => {
     })
 });
 
+
 if (labels[3]) {
   labels[3].style.borderLeft = "10px solid pink";
   get_data({},"Profile")
 }
+
 let Time = _(".Time")[0]
 let All = _(".All")[0]
 let profile = _(".profile")[0]
@@ -265,16 +503,23 @@ function send_data(){
     }
     new_rec_data.School= document.getElementById("School").value;
     new_rec_data.info= document.getElementById("info").value
+    new_rec_data.Res_info=document.getElementById("Res_info").value
+    console.log(Res_info)
     send_data2(new_rec_data,"New_Rec")
     
 }
 //new xml for new Rec
 function send_data2(data, type) {
+    let button=document.getElementById("send")
+    button.value="...loading"
+    button.disabled=true
     let xml2 = new XMLHttpRequest();
     xml2.onload = function () {
         if (xml2.status == 200 || xml2.readyState == 4) {
             alert(xml2.responseText);
             handle_results(xml2.responseText);
+            button.disabled=false
+            button.value="Send"
         }
     };
     data.data_type = type;
@@ -322,5 +567,11 @@ function send_data_Profile() {
 
 
    </script>
+ 
+
+
+<?php endif?>
+ 
+ 
 </body>
 </html>

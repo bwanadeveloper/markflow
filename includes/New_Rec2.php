@@ -56,6 +56,10 @@ if(empty($arr["Info"])){
     $Error.="please input your short info <br>";
 }
 
+$arr["Res_info"]=htmlspecialchars($DATA->Res_info);
+if(!empty($arr["Res_info"])){
+    $Error.="please dont fill in Res_info it's for upper management <br>";
+}
 
 if($DATA->Exam==0 && $DATA->Ass1==0 && $DATA->Ass2==0 && $DATA->Ass3==0 && $DATA->Cat1==0 && $DATA->Cat2==0){
     $Error.="please select what's Missing <br>";
@@ -72,9 +76,9 @@ $arr["Resolved"]=0;
 // 	Missing_id	Unit	Name	Reg	School	Ass1	Ass2	Ass3	Cat1	Cat2
 
 if($Error==""){
-$arr["Missing_id"]=getRandomNumber(20);
+$arr["Missing_id"]=getRandomNumber(20,7);
 $db=new database();
-$query = "insert into missing_marks (Missing_id, User_id ,Unit ,Name,Reg ,School,Lec,Exam, Ass1,Ass2, Ass3,	Cat1, Cat2, Info,Time,Resolved) VALUES (:Missing_id,:user_id,:Unit ,:Name ,:Reg	,:School,:Lec,:Exam, :Ass1, :Ass2,	:Ass3, :Cat1, :Cat2,:Info,:Time,:Resolved)";
+$query = "insert into missing_marks (Missing_id, User_id ,Unit ,Name,Reg ,School,Lec,Exam, Ass1,Ass2, Ass3,	Cat1, Cat2, Info,Res_info,Time,Resolved) VALUES (:Missing_id,:user_id,:Unit ,:Name ,:Reg,:School,:Lec,:Exam, :Ass1, :Ass2,	:Ass3, :Cat1, :Cat2,:Info,:Res_info,:Time,:Resolved)";
 $db->write($query,$arr);
 $info->data_type="New_Rec";
 $info->message="You have successfully added a Reconsiliation";

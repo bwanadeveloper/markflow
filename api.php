@@ -7,7 +7,7 @@ $info = (object)[];
 $RAW_DATA = file_get_contents("php://input");
 $DATA = json_decode($RAW_DATA);
 
-if (isset($DATA->data_type) && $DATA->data_type != "signup" && $DATA->data_type != "Login") {
+if (isset($DATA->data_type) && $DATA->data_type != "signup" && $DATA->data_type != "Login" && $DATA->data_type!="Forgot_password") {
     if (!isset($_SESSION["user_info"])) {
         $info->logged_in = false;
         $info->data_type = "login";

@@ -46,7 +46,7 @@ else{
 }
 
 if($Error==""){
-    $arr["user_id"]=getRandomNumber(20);
+    $arr["user_id"]=getRandomNumber(20,7);
 $db=new database();
 $query = "insert into students (user_id, username, email, password) VALUES (:user_id, :username, :email, :password)";
 $db->write($query,$arr);

@@ -7,13 +7,9 @@ $Error="";
 
     
 $arr["Unit"]=htmlspecialchars($DATA->Unit);
-if($arr["Unit"]==""){
-    $Error.="please fill in the Unit <br>";
+if($arr["Unit"]=="Unit"){
+    $Error.="please select the Unit <br>";
    
-}else{
-    if(strlen($arr["Unit"])<5){
-    $Error.="please fill in a Unit with atleast 5 chars <br>";
-    }
 }
 
 $arr["Name"]=htmlspecialchars($DATA->Name);
@@ -37,13 +33,16 @@ else{
 }
 
 $arr["Lec"]=htmlspecialchars($DATA->Lec);
-if(empty($arr["Lec"])){
-    $Error.="please input your Lecturers Name <br>";
+if($arr["Lec"]=="Lecturer"){
+    $Error.="please select your Lecturer's Name <br>";
 }
-else{
-    if(strlen($arr["Lec"])<3){
-    $Error.="Lecturers name should be more chars <br>";
+$arr["Year"]=htmlspecialchars($DATA->Year);
+if($arr["Year"]=="Year"){
+    $Error.="please select your Year <br>";
 }
+$arr["Trimester"]=htmlspecialchars($DATA->Trimester);
+if($arr["Trimester"]=="Trimester"){
+    $Error.="please select your Trimester <br>";
 }
 
 $arr["School"]=htmlspecialchars($DATA->School);
@@ -78,7 +77,7 @@ $arr["Resolved"]=0;
 if($Error==""){
 $arr["Missing_id"]=getRandomNumber(20,7);
 $db=new database();
-$query = "insert into missing_marks (Missing_id, User_id ,Unit ,Name,Reg ,School,Lec,Exam, Ass1,Ass2, Ass3,	Cat1, Cat2, Info,Res_info,Time,Resolved) VALUES (:Missing_id,:user_id,:Unit ,:Name ,:Reg,:School,:Lec,:Exam, :Ass1, :Ass2,	:Ass3, :Cat1, :Cat2,:Info,:Res_info,:Time,:Resolved)";
+$query = "insert into missing_marks (Missing_id, User_id ,Unit ,Name,Reg ,School,Lec,Exam, Ass1,Ass2, Ass3,	Cat1, Cat2, Info,Trimester,Year,Res_info,Time,Resolved) VALUES (:Missing_id,:user_id,:Unit ,:Name ,:Reg,:School,:Lec,:Exam, :Ass1, :Ass2,	:Ass3, :Cat1, :Cat2,:Info,:Trimester,:Year,:Res_info,:Time,:Resolved)";
 $db->write($query,$arr);
 $info->data_type="New_Rec";
 $info->message="You have successfully added a Reconsiliation";

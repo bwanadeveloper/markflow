@@ -27,15 +27,18 @@ include "configs/autoload.php"
              border: solid thin black;
              padding:3px;
              border-radius: 2px;
+            
             /* box-shadow: 0 0 0 1px black;  */
         }
         input[type="checkbox"]{
             border:none;
+            accent-color: #41fccd;
         }
         input[type="button"]{
             border:none;
             border-radius: 4px;
             padding:5px;
+            accent-color: #41fccd;
         }
         textarea{
             outline: none;
@@ -118,8 +121,59 @@ include "configs/autoload.php"
             width:60%;
             margin: auto;
         }
-        
+        #wrapper-view-missing input[type="text"]{
+            padding: 8px;
+            border-radius: 5px; 
+            width:30%; 
+            border: solid 1px #41fccd;
+            box-shadow: 0 0 3px 1px #41fccd;
+        }
+        #wrapper-view-missing select{
+            padding: 8px;
+            border-radius: 5px; 
+            width:32.5%; 
+            border: solid 1px #41fccd;
+            box-shadow: 0 0 3px 1px #41fccd; 
+        }
+        #profile{
+            display: flex;
+        }
+        #profile input[type="text"]{
+            width:80%;
+            padding: 8px;
+            border-radius: 5px;
+            border: solid 1px green;
+        }
+        #profile select{
+            width:80%;
+            padding: 8px;
+            border-radius: 5px;
+            border: solid 1px green;
+        }
 
+        #new_rec input[type="text"]{
+            padding: 8px;
+            border-radius: 5px; 
+            width:60%; 
+            border: solid 1px #41fccd;
+            box-shadow: 0 0 3px 1px #41fccd;
+        }
+        #new_rec select{
+            padding: 8px;
+            border-radius: 5px; 
+            width:67%; 
+            border: solid 1px #41fccd;
+            box-shadow: 0 0 3px 1px #41fccd;
+            outline:none;
+        }
+        textarea{
+            border-radius: 5px; 
+            border: solid 1px #41fccd;
+            box-shadow: 0 0 3px 1px #41fccd;
+        }
+        #new_rec{
+            display: flex;
+        }
     
     </style>
 </head>
@@ -136,6 +190,7 @@ if (!empty($_GET["action"]) && $_GET["action"] === "view" && !empty($_GET["id"])
     $result=$db->read($sql,$arr);
     // print_r($result);
     $selectedSchool=$result[0]->School ;
+    $selectedtrimester=$result[0]->Trimester;
     $name=$result[0]->Name ;
     $reg=$result[0]->Reg ;
     $unit=$result[0]->Unit;
@@ -148,35 +203,72 @@ if (!empty($_GET["action"]) && $_GET["action"] === "view" && !empty($_GET["id"])
     $ass3=$result[0]->Ass3;
     $cat1=$result[0]->Cat1;
     $cat2=$result[0]->Cat2;
+    $currentYear = date("Y");  // Current year
+    $selectedyear =$result[0]->Year;
+    
     // print_r($result)
   
     ?>
     <div id="wrapper-view-missing">
     <div style="margin-top:5px">
+    <label style="display:block" for="Name">Name:</label>
     <input type="text" name="Name" value="<?= $name ?>" id="Name">
 
-            <label for="Name">Name:</label>
+           
         </div>
 
         <div style="margin-top:5px">
+        <label style="display:block" for="Reg.No">Reg.No:</label>
             <input type="text" name="Reg.No" value=<?=$reg?> id="Reg.No">
-            <label for="Reg.No">Reg.No:</label>
+            
         </div>
 
         <div style="margin-top:5px">
+        <label style="display:block" for="School">School:</label>
             <select id="School" name="School">
                 <option value="School" <?=$selectedSchool == "School" ? 'selected' : ''?>>School</option>
                 <option value="Technology" <?= $selectedSchool == "Technology" ? 'selected' : ''?>>Technology</option>
                 <option value="Business" <?= $selectedSchool == "Business" ? 'selected' : ''?>>Business</option>
                 <option value="Education" <?= $selectedSchool == "Education" ? 'selected' : ''?>>Education</option>
             </select>
-            <label for="School">School:</label>
+            
+        </div>
+         <div style="margin-top:5px">
+        <label style="display:block" for="Trimester">Trimester:</label>
+            <select id="Trimester" name="Trimester">
+                <option value="Trimester" <?=$selectedtrimester == "Trimester" ? 'selected' : ''?>>Trimester</option>
+                <option value="Trimester 1" <?= $selectedtrimester == "Trimester 1" ? 'selected' : ''?>>Trimester 1</option>
+                <option value="Trimester 2" <?= $selectedtrimester == "Trimester 2" ? 'selected' : ''?>>Trimester 2</option>
+                <option value="Trimester 3" <?= $selectedtrimester == "Trimester 3" ? 'selected' : ''?>>Trimester 3</option>
+            </select>
+            
         </div>
 
         <div style="margin-top:5px">
-            <input type="text" name="Unit" id="unit" value="<?=$unit?>">
-            <label for="unit">Unit:</label>
+        <label style="display:block" for="Year">Year:</label>
+            <select id="Year" name="Year">
+                <option value="Year" <?=$selectedyear == "Year" ? 'selected' : ''?>>Year</option>
+                <option value="<?=$currentYear?>" <?= $selectedyear == $currentYear ? 'selected' : ''?>><?=$currentYear?></option>
+                <option value="<?=$currentYear-1?>" <?= $selectedyear == $currentYear-1 ? 'selected' : ''?>><?=$currentYear-1?></option>
+                <option value="<?=$currentYear-2?>" <?= $selectedyear == $currentYear-2 ? 'selected' : ''?>><?=$currentYear-2?></option>
+                <option value="<?=$currentYear-3?>" <?= $selectedyear == $currentYear-3 ? 'selected' : ''?>><?=$currentYear-3?></option>
+            </select>
+            
         </div>
+
+        <div style="margin-top:5px">
+        <label style="display:block" for="Unit">Unit:</label>
+            <select id="Unit" name="Unit">
+                <option value="Unit" <?=$unit == "Unit" ? 'selected' : ''?>>Unit</option>
+                <option value="Application Programming" <?= $unit == "Application Programming" ? 'selected' : ''?>>Application Programming</option>
+                <option value="Database Design and Development" <?= $unit == "Database Design and Development" ? 'selected' : ''?>>Database Design and Development</option>
+                <option value="Fundamentals of Web Design" <?= $unit == "Fundamentals of Web Design" ? 'selected' : ''?>>Fundamentals of Web Design</option>
+                <option value="Computing Mathematics" <?= $unit == "Computing Mathematics" ? 'selected' : ''?>>Computing Mathematics</option>
+            </select>
+            
+        </div>
+
+
 
         <div style="margin-top:5px">
         <input type="checkbox" value="Exam" name="Exam" id="Exam" <?= $exam == 1 ? 'checked' : '' ?>>
@@ -198,9 +290,18 @@ if (!empty($_GET["action"]) && $_GET["action"] === "view" && !empty($_GET["id"])
         </div>
 
         <div style="margin-top:5px">
-            <input type="text" name="Lec" id="Lec" value="<?=$lec?>">
-            <label for="Lec">Lec:</label>
+        <label style="display:block" for="Lec">Lec:</label>
+            <select id="Lec" name="Lec">
+                <option value="Lecturer" <?=$lec == "Lecturer" ? 'selected' : ''?>>Lecturer</option>
+                <option value="Zipporah Munene" <?= $lec == "Zipporah Munene" ? 'selected' : ''?>>Zipporah Munene</option>
+                <option value="Mundian Wangeshi" <?= $lec == "Mundian Wangeshi" ? 'selected' : ''?>>Mundian Wangeshi</option>
+                <option value="Sally Masinde" <?= $lec == "Sally Masinde" ? 'selected' : ''?>>Sally Masinde</option>
+                <option value="Rodgers Abongo" <?= $lec == "Rodgers Abongo" ? 'selected' : ''?>>Rodgers Abongo</option>
+            </select>
+            
         </div>
+
+       
 
         <div style="margin-top:5px">
             <textarea name="Info" id="info" rows="10" cols="40"><?=$info?></textarea>
@@ -235,8 +336,9 @@ if (!empty($_GET["action"]) && $_GET["action"] === "view" && !empty($_GET["id"])
     $db = new database();
     
     $result=$db->read($sql,$arr);
-
+    // print_r($result);
     $selectedSchool=$result[0]->School ;
+    $selectedtrimester=$result[0]->Trimester;
     $name=$result[0]->Name ;
     $reg=$result[0]->Reg ;
     $unit=$result[0]->Unit;
@@ -249,35 +351,72 @@ if (!empty($_GET["action"]) && $_GET["action"] === "view" && !empty($_GET["id"])
     $ass3=$result[0]->Ass3;
     $cat1=$result[0]->Cat1;
     $cat2=$result[0]->Cat2;
+    $currentYear = date("Y");  // Current year
+    $selectedyear =$result[0]->Year;
+    
     // print_r($result)
   
     ?>
     <div id="wrapper-view-missing">
     <div style="margin-top:5px">
+    <label style="display:block" for="Name">Name:</label>
     <input type="text" name="Name" value="<?= $name ?>" id="Name">
 
-            <label for="Name">Name:</label>
+           
         </div>
 
         <div style="margin-top:5px">
+        <label style="display:block" for="Reg.No">Reg.No:</label>
             <input type="text" name="Reg.No" value=<?=$reg?> id="Reg.No">
-            <label for="Reg.No">Reg.No:</label>
+            
         </div>
 
         <div style="margin-top:5px">
+        <label style="display:block" for="School">School:</label>
             <select id="School" name="School">
                 <option value="School" <?=$selectedSchool == "School" ? 'selected' : ''?>>School</option>
                 <option value="Technology" <?= $selectedSchool == "Technology" ? 'selected' : ''?>>Technology</option>
                 <option value="Business" <?= $selectedSchool == "Business" ? 'selected' : ''?>>Business</option>
                 <option value="Education" <?= $selectedSchool == "Education" ? 'selected' : ''?>>Education</option>
             </select>
-            <label for="School">School:</label>
+            
+        </div>
+         <div style="margin-top:5px">
+        <label style="display:block" for="Trimester">Trimester:</label>
+            <select id="Trimester" name="Trimester">
+                <option value="Trimester" <?=$selectedtrimester == "Trimester" ? 'selected' : ''?>>Trimester</option>
+                <option value="Trimester 1" <?= $selectedtrimester == "Trimester 1" ? 'selected' : ''?>>Trimester 1</option>
+                <option value="Trimester 2" <?= $selectedtrimester == "Trimester 2" ? 'selected' : ''?>>Trimester 2</option>
+                <option value="Trimester 3" <?= $selectedtrimester == "Trimester 3" ? 'selected' : ''?>>Trimester 3</option>
+            </select>
+            
         </div>
 
         <div style="margin-top:5px">
-            <input type="text" name="Unit" id="unit" value="<?=$unit?>">
-            <label for="unit">Unit:</label>
+        <label style="display:block" for="Year">Year:</label>
+            <select id="Year" name="Year">
+                <option value="Year" <?=$selectedyear == "Year" ? 'selected' : ''?>>Year</option>
+                <option value="<?=$currentYear?>" <?= $selectedyear == $currentYear ? 'selected' : ''?>><?=$currentYear?></option>
+                <option value="<?=$currentYear-1?>" <?= $selectedyear == $currentYear-1 ? 'selected' : ''?>><?=$currentYear-1?></option>
+                <option value="<?=$currentYear-2?>" <?= $selectedyear == $currentYear-2 ? 'selected' : ''?>><?=$currentYear-2?></option>
+                <option value="<?=$currentYear-3?>" <?= $selectedyear == $currentYear-3 ? 'selected' : ''?>><?=$currentYear-3?></option>
+            </select>
+            
         </div>
+
+        <div style="margin-top:5px">
+        <label style="display:block" for="Unit">Unit:</label>
+            <select id="Unit" name="Unit">
+                <option value="Unit" <?=$unit == "Unit" ? 'selected' : ''?>>Unit</option>
+                <option value="Application Programming" <?= $unit == "Application Programming" ? 'selected' : ''?>>Application Programming</option>
+                <option value="Database Design and Development" <?= $unit == "Database Design and Development" ? 'selected' : ''?>>Database Design and Development</option>
+                <option value="Fundamentals of Web Design" <?= $unit == "Fundamentals of Web Design" ? 'selected' : ''?>>Fundamentals of Web Design</option>
+                <option value="Computing Mathematics" <?= $unit == "Computing Mathematics" ? 'selected' : ''?>>Computing Mathematics</option>
+            </select>
+            
+        </div>
+
+
 
         <div style="margin-top:5px">
         <input type="checkbox" value="Exam" name="Exam" id="Exam" <?= $exam == 1 ? 'checked' : '' ?>>
@@ -299,9 +438,18 @@ if (!empty($_GET["action"]) && $_GET["action"] === "view" && !empty($_GET["id"])
         </div>
 
         <div style="margin-top:5px">
-            <input type="text" name="Lec" id="Lec" value="<?=$lec?>">
-            <label for="Lec">Lec:</label>
+        <label style="display:block" for="Lec">Lec:</label>
+            <select id="Lec" name="Lec">
+                <option value="Lecturer" <?=$lec == "Lecturer" ? 'selected' : ''?>>Lecturer</option>
+                <option value="Zipporah Munene" <?= $lec == "Zipporah Munene" ? 'selected' : ''?>>Zipporah Munene</option>
+                <option value="Mundian Wangeshi" <?= $lec == "Mundian Wangeshi" ? 'selected' : ''?>>Mundian Wangeshi</option>
+                <option value="Sally Masinde" <?= $lec == "Sally Masinde" ? 'selected' : ''?>>Sally Masinde</option>
+                <option value="Rodgers Abongo" <?= $lec == "Rodgers Abongo" ? 'selected' : ''?>>Rodgers Abongo</option>
+            </select>
+            
         </div>
+
+       
 
         <div style="margin-top:5px">
             <textarea name="Info" id="info" rows="10" cols="40"><?=$info?></textarea>
@@ -422,7 +570,7 @@ let xml = new XMLHttpRequest()
 
 xml.onload=function (){
 if(xml.status==200 || xml.readyState==4){
-alert(xml.responseText)
+// alert(xml.responseText)
 handle_results(xml.responseText)
 }
 }
@@ -493,7 +641,7 @@ function send_data(){
             case "Name":
                 new_rec_data.Name = inputs[i].value;
                 break;
-            case "Reg.No":
+            case "RegNo":
                 new_rec_data.Reg = inputs[i].value;
                 break;
             case "Lec":
@@ -504,6 +652,10 @@ function send_data(){
     new_rec_data.School= document.getElementById("School").value;
     new_rec_data.info= document.getElementById("info").value
     new_rec_data.Res_info=document.getElementById("Res_info").value
+    new_rec_data.Trimester = document.getElementById("Trimester").value
+    new_rec_data.Year = document.getElementById("Year").value
+    new_rec_data.Unit = document.getElementById("Unit").value
+    new_rec_data.Lec = document.getElementById("Lec").value
     console.log(Res_info)
     send_data2(new_rec_data,"New_Rec")
     
@@ -516,7 +668,7 @@ function send_data2(data, type) {
     let xml2 = new XMLHttpRequest();
     xml2.onload = function () {
         if (xml2.status == 200 || xml2.readyState == 4) {
-            alert(xml2.responseText);
+            // alert(xml2.responseText);
             handle_results(xml2.responseText);
             button.disabled=false
             button.value="Send"

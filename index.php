@@ -570,7 +570,7 @@ let xml = new XMLHttpRequest()
 
 xml.onload=function (){
 if(xml.status==200 || xml.readyState==4){
-// alert(xml.responseText)
+//alert(xml.responseText)
 handle_results(xml.responseText)
 }
 }
@@ -668,7 +668,7 @@ function send_data2(data, type) {
     let xml2 = new XMLHttpRequest();
     xml2.onload = function () {
         if (xml2.status == 200 || xml2.readyState == 4) {
-            // alert(xml2.responseText);
+             //alert(xml2.responseText);
             handle_results(xml2.responseText);
             button.disabled=false
             button.value="Send"

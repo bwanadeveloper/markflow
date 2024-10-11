@@ -107,7 +107,7 @@ function get_data(find, type) {
     xml.onload = function () {
         if (xml.readyState == 4 && xml.status == 200) {
             // Output the server response in the console
-            alert(xml.responseText)
+            // alert(xml.responseText)
             handle_result(xml.responseText);
         }
     };
